@@ -139,6 +139,12 @@ func init() {
 		}
 	}
 
+	// Check for port in environment variable
+	if v := os.Getenv("WUZAPI_PORT"); v != "" {
+		*port = v
+		log.Info().Str("port", v).Msg("Port configured from environment variable")
+	}
+
 	// Check for global webhook in environment variable
 	if *globalWebhook == "" {
 		if v := os.Getenv("WUZAPI_GLOBAL_WEBHOOK"); v != "" {
