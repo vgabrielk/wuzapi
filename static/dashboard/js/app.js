@@ -434,7 +434,7 @@ async function addInstance(data) {
   console.log("Add Instance...");
   const admintoken = getLocalStorageItem('admintoken');
   const myHeaders = new Headers();
-  myHeaders.append('authorization', admintoken);
+  myHeaders.append('Authorization', admintoken);
   myHeaders.append('Content-Type', 'application/json');
   
   // Build proxy configuration
@@ -658,7 +658,7 @@ async function performDelete(id) {
   console.log('Deleting instance with ID:', id);
   const admintoken = getLocalStorageItem('admintoken');
   const myHeaders = new Headers();
-  myHeaders.append('authorization', admintoken);
+  myHeaders.append('Authorization', admintoken);
   myHeaders.append('Content-Type', 'application/json');
   res = await fetch(baseUrl + "/admin/users/"+id+"/full", {
     method: "DELETE",
@@ -882,7 +882,7 @@ async function getUsers() {
   console.log("Get users...");
   const admintoken = getLocalStorageItem('admintoken');
   const myHeaders = new Headers();
-  myHeaders.append('authorization', admintoken);
+  myHeaders.append('Authorization', admintoken);
   myHeaders.append('Content-Type', 'application/json');
   res = await fetch(baseUrl + "/admin/users", {
     method: "GET",
