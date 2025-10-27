@@ -13,6 +13,23 @@ import (
 
 type Middleware = alice.Constructor
 
+// CORS middleware
+func (s *server) corsMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, Token")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+		
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+		
+		next.ServeHTTP(w, r)
+	})
+}
+
 func (s *server) routes() {
 
 	ex, err := os.Executable()
@@ -142,4 +159,7 @@ func (s *server) routes() {
 	s.router.Handle("/newsletter/list", c.Then(s.ListNewsletter())).Methods("GET")
 
 	s.router.PathPrefix("/").Handler(http.FileServer(http.Dir(exPath + "/static/")))
+	
+	// Apply CORS middleware to all routes
+	s.router.Use(s.corsMiddleware)
 }
